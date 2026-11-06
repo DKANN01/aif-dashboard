@@ -1,0 +1,35 @@
+name: Refresh market data
+
+on:
+  schedule:
+    # 21:30 UTC on weekdays - about 30 minutes after the US close.
+    - cron: "30 21 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Fetch latest prices and fundamentals
+        run: python3 scripts/fetch_data.py
+
+      - name: Commit if the data changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet data/portfolio.json; then
+            echo "No change."
+          else
+            git add data/portfolio.json
+            git commit -m "Refresh market data"
+            git push
+          fi

@@ -1,0 +1,25 @@
+{
+  "source": "Fidelity Investment Report, statement period August 1-31, 2026 (file: AIF - August 2026.pdf, Holdings section, pages 3-4). Share counts are the 'Quantity Aug 31, 2026' column.",
+  "as_of": "2026-08-31",
+  "account": "THE UVA MCINTIRE SCHOOL OF COMMERCE FOUNDATION",
+  "cash": {
+    "ticker": "SPAXX",
+    "name": "Fidelity Government Money Market",
+    "shares": 12642.43,
+    "nav": 1.0
+  },
+  "equities": [
+    { "ticker": "CPNG",  "name": "Coupang, Inc.",                  "shares": 491.44 },
+    { "ticker": "NET",   "name": "Cloudflare, Inc.",               "shares": 26.71 },
+    { "ticker": "GOOG",  "name": "Alphabet Inc. Cl C",             "shares": 17.803 },
+    { "ticker": "FWONK", "name": "Formula One Group Series C",     "shares": 54.2 },
+    { "ticker": "APO",   "name": "Apollo Global Management, Inc.", "shares": 34.868 },
+    { "ticker": "SN",    "name": "SharkNinja, Inc.",               "shares": 24.66 },
+    { "ticker": "EMBJ",  "name": "Embraer SA ADR",                 "shares": 65.239 },
+    { "ticker": "FERG",  "name": "Ferguson Enterprises Inc.",      "shares": 17.74,
+      "sector_override": "Industrials",
+      "sector_override_note": "Nasdaq classifies FERG as 'Miscellaneous'. Override uses the workbook's Refinitiv industry, 'Homebuilding & Construction Supplies'." },
+    { "ticker": "FLUT",  "name": "Flutter Entertainment plc",      "shares": 30.24 },
+    { "ticker": "WM",    "name": "Waste Management, Inc.",         "shares": 12.758 }
+  ]
+}

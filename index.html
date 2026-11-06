@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIF Portfolio Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div>
+      <h1>AIF Portfolio Dashboard</h1>
+      <p class="sub" id="accountLine">Loading&hellip;</p>
+    </div>
+    <div class="asof">
+      <span class="asof-label">Prices as of</span>
+      <span class="asof-value" id="asOf">&mdash;</span>
+      <span class="asof-note" id="positionsAsOf"></span>
+    </div>
+  </header>
+
+  <section class="cards" id="cards"></section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Sector Allocation</h2>
+      <span class="hint">Click a sector to filter</span>
+    </div>
+    <div class="sectors" id="sectors"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Positions</h2>
+      <div class="controls">
+        <input type="search" id="search" placeholder="Filter ticker, name or sector&hellip;" autocomplete="off">
+        <button type="button" id="clearFilters" class="btn">Reset</button>
+      </div>
+    </div>
+    <div class="active-filter" id="activeFilter" hidden></div>
+    <div class="table-scroll">
+      <table id="table">
+        <thead>
+          <tr>
+            <th class="sortable text" data-key="ticker">Position</th>
+            <th class="sortable text" data-key="sector">Sector</th>
+            <th class="sortable num" data-key="weight">Weight</th>
+            <th class="sortable num" data-key="price">Price</th>
+            <th class="sortable num" data-key="day_change_pct">Day</th>
+            <th class="sortable num" data-key="market_value">Market Value</th>
+            <th class="sortable num" data-key="return_1m">1M</th>
+            <th class="sortable num" data-key="return_3m">3M</th>
+            <th class="sortable num" data-key="return_ytd">YTD</th>
+            <th class="sortable num" data-key="pe">P/E</th>
+            <th class="sortable num" data-key="market_cap">Mkt Cap</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+        <tfoot id="tfoot"></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p id="sourceLine"></p>
+    <p class="defs">
+      <strong>Definitions.</strong>
+      Weight is market value over total account value including cash.
+      1M and 3M returns compare the current price to the closing price on the nearest trading
+      day on or before one and three calendar months ago; YTD compares to the
+      <span id="ytdBase">prior year-end</span> close. Returns are price-only &mdash; they exclude dividends.
+      P/E is the last reported fiscal-year multiple; <span class="nm">n/m</span> marks
+      negative or distorted earnings. Portfolio return figures are the market-value-weighted
+      average of the equity positions and exclude the cash sleeve.
+    </p>
+  </footer>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>

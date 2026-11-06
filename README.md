@@ -50,10 +50,11 @@ in that file and only applies when the upstream sector is missing or "Miscellane
 
 ## The Construct tab
 
-You type the **dollars** going into each name. The **weight** column is that amount divided by the
-total invested, so the weights always add to 100% and the table is read the same way whatever the
-size of the book. The line under the table compares the dollars invested against the account's
-actual value and names the difference as cash left over or an overdraw.
+You type the **dollars** going into each name. The **weight** column is that amount as a share of
+the account, and whatever is not invested is carried as a cash line — at the bottom of the table
+and as its own bar in the sector allocation — so the weights always add to 100% and read the same
+way as the Dashboard tab. Put in more than the account holds and the cash line disappears in favour
+of a warning naming the overdraw.
 
 **Equal weight** spreads the invested dollars evenly across the current names, **Invest full
 account** scales the draft proportionally until it uses the whole account value, and **Load current

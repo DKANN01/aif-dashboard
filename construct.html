@@ -77,7 +77,7 @@
   <section class="panel">
     <div class="panel-head">
       <h2>Sector Allocation</h2>
-      <span class="hint">Share of invested dollars &mdash; cash is excluded</span>
+      <span class="hint">Share of the account, with uninvested cash as its own line</span>
     </div>
     <div class="sectors" id="draftSectors"></div>
   </section>
@@ -86,12 +86,11 @@
     <p id="sourceLine"></p>
     <p class="defs">
       <strong>Definitions.</strong>
-      You type the dollars going into each name; <em>weight</em> is that amount divided by
-      the total invested, so the weights always add to 100% and any cash left against the
-      account's value is called out under the table instead. Portfolio P/E, EV/Sales and
-      YTD return are weighted by those weights across the positions that report each
-      figure, so they ignore names with negative earnings. YTD is price-only and excludes
-      dividends. Multiples use the last reported fiscal year unless labelled
+      You type the dollars going into each name; <em>weight</em> is that amount as a share
+      of the account, with whatever is left over carried as a cash line, so the weights
+      always add to 100%. Portfolio P/E, EV/Sales and YTD return are weighted across the
+      positions that report each figure, so they ignore both cash and names with negative
+      earnings. YTD is price-only and excludes dividends. Multiples use the last reported fiscal year unless labelled
       <em>forward</em>, which is the next-year analyst estimate.
     </p>
   </footer>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio Construction &middot; AIF</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="tabs">
+    <a href="index.html">Dashboard</a>
+    <a href="construct.html" class="active" aria-current="page">Construct</a>
+  </nav>
+
+  <header class="head">
+    <div>
+      <h1>Portfolio Construction</h1>
+      <p class="sub" id="subLine">Loading&hellip;</p>
+    </div>
+    <div class="asof">
+      <span class="asof-label">Universe</span>
+      <span class="asof-value" id="universeCount">&mdash;</span>
+      <span class="asof-note" id="universeAsOf"></span>
+    </div>
+  </header>
+
+  <section class="cards" id="cards"></section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Add a Position</h2>
+      <div class="controls">
+        <button type="button" class="btn" id="loadCurrent">Load current portfolio</button>
+        <button type="button" class="btn" id="equalWeight">Equal weight</button>
+        <button type="button" class="btn" id="normalize">Normalize to 100%</button>
+        <button type="button" class="btn danger" id="clearAll">Clear</button>
+      </div>
+    </div>
+    <div class="searchbox">
+      <input type="search" id="tickerSearch" autocomplete="off" spellcheck="false"
+             placeholder="Search a ticker or company name &mdash; e.g. NVDA, Costco&hellip;"
+             role="combobox" aria-expanded="false" aria-controls="suggestions">
+      <div class="suggestions" id="suggestions" role="listbox" hidden></div>
+    </div>
+    <p class="hint" id="searchHint"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Target Portfolio</h2>
+      <span class="hint">Edit a weight, or click a row to see its multiples and YTD chart</span>
+    </div>
+    <div class="table-scroll">
+      <table id="draftTable">
+        <thead>
+          <tr>
+            <th class="text">Position</th>
+            <th class="text">Sector</th>
+            <th class="num">Target Weight</th>
+            <th class="num">Price</th>
+            <th class="num">YTD</th>
+            <th class="num">P/E</th>
+            <th class="num">Mkt Cap</th>
+            <th class="num"></th>
+          </tr>
+        </thead>
+        <tbody id="draftBody"></tbody>
+        <tfoot id="draftFoot"></tfoot>
+      </table>
+    </div>
+    <p class="weight-note" id="weightNote"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Sector Allocation</h2>
+      <span class="hint">Target weights only &mdash; cash is whatever is left unallocated</span>
+    </div>
+    <div class="sectors" id="draftSectors"></div>
+  </section>
+
+  <footer class="foot">
+    <p id="sourceLine"></p>
+    <p class="defs">
+      <strong>Definitions.</strong>
+      Target weights are what you type &mdash; they do not have to add to 100%, and any
+      shortfall is shown as unallocated cash. Portfolio P/E, EV/Sales and YTD return are
+      weighted by target weight across the positions that report each figure, so they
+      ignore both cash and names with negative earnings. YTD is price-only and excludes
+      dividends. Multiples use the last reported fiscal year unless labelled
+      <em>forward</em>, which is the next-year analyst estimate.
+    </p>
+  </footer>
+
+</div>
+
+<!-- Detail drawer: valuation multiples plus the YTD price chart. -->
+<div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-labelledby="drawerTicker" role="dialog" aria-modal="true">
+  <div class="drawer-head">
+    <div>
+      <h2 id="drawerTicker">&mdash;</h2>
+      <p class="sub" id="drawerName"></p>
+    </div>
+    <button type="button" class="btn icon" id="drawerClose" aria-label="Close">&times;</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<script src="construct.js"></script>
+</body>
+</html>

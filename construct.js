@@ -265,6 +265,31 @@ function draftRows() {
     .sort((a, b) => b.weight - a.weight || a.ticker.localeCompare(b.ticker));
 }
 
+/**
+ * Scale `targets` so the weights sum to exactly 100.00 at two decimals.
+ *
+ * Rounding each share independently leaves the total a cent or two off, which
+ * then shows up as "99.99%" under a button labelled "Normalize to 100%".
+ * Largest-remainder apportionment avoids that: floor everything to a cent,
+ * then hand the leftover cents to the shares with the biggest remainders.
+ */
+function apportion(targets) {
+  const total = targets.reduce((s, v) => s + v, 0);
+  if (!total) return targets.map(() => 0);
+
+  const exact = targets.map((v) => (v / total) * 10000); // in cents of a percent
+  const floors = exact.map(Math.floor);
+  let leftover = 10000 - floors.reduce((s, v) => s + v, 0);
+
+  const order = exact
+    .map((v, i) => ({ i, frac: v - Math.floor(v) }))
+    .sort((a, b) => b.frac - a.frac);
+
+  for (let k = 0; leftover > 0; k++, leftover--) floors[order[k % order.length].i] += 1;
+
+  return floors.map((cents) => cents / 100);
+}
+
 /** Weighted average of `key` over the rows that actually report it. */
 function weightedBy(rows, key, usable = (v) => v != null) {
   const covered = rows.filter((r) => usable(r[key]) && r.weight > 0);
@@ -710,16 +735,16 @@ document.getElementById("loadCurrent").addEventListener("click", () => {
 
 document.getElementById("equalWeight").addEventListener("click", () => {
   if (!state.draft.length) return;
-  const w = Number((100 / state.draft.length).toFixed(2));
-  state.draft.forEach((r) => (r.weight = w));
+  const even = apportion(state.draft.map(() => 1));
+  state.draft.forEach((r, i) => (r.weight = even[i]));
   saveDraft();
   render();
 });
 
 document.getElementById("normalize").addEventListener("click", () => {
-  const total = draftTotal();
-  if (!total) return;
-  state.draft.forEach((r) => (r.weight = Number(((r.weight / total) * 100).toFixed(2))));
+  if (!draftTotal()) return;
+  const scaled = apportion(state.draft.map((r) => r.weight));
+  state.draft.forEach((r, i) => (r.weight = scaled[i]));
   saveDraft();
   render();
 });

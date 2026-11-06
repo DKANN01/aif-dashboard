@@ -6,13 +6,16 @@
 // lazily the first time a position is opened). The draft lives in
 // localStorage so a work-in-progress survives a refresh.
 
-const STORAGE_KEY = "aif.construct.draft.v1";
+// v2 stores dollars per name rather than a typed percent, so a v1 draft cannot
+// be read as-is and is simply replaced by a fresh seed from current positions.
+const STORAGE_KEY = "aif.construct.draft.v2";
 const MAX_SUGGESTIONS = 8;
+const DEFAULT_ADD = 5000;  // dollars seeded into a brand-new position
 
 const state = {
   universe: [],          // [{ticker, name, sector, industry, market_cap, price, ytd, pe}]
   byTicker: new Map(),
-  draft: [],             // [{ticker, weight}] - weight is a percent, as typed
+  draft: [],             // [{ticker, dollars}] - weights are derived from these
   current: null,         // holdings from the live dashboard, for "Load current"
   detail: new Map(),     // ticker -> detail payload (cache)
   highlight: -1,         // keyboard position in the suggestion list
@@ -72,7 +75,7 @@ function loadDraft() {
     if (!Array.isArray(parsed)) return null;
     return parsed
       .filter((r) => r && typeof r.ticker === "string")
-      .map((r) => ({ ticker: r.ticker, weight: Number(r.weight) || 0 }));
+      .map((r) => ({ ticker: r.ticker, dollars: Number(r.dollars) || 0 }));
   } catch {
     return null;
   }
@@ -101,6 +104,12 @@ async function load() {
   });
   state.byTicker = new Map(state.universe.map((r) => [r.ticker, r]));
   state.current = portfolio;
+
+  // Both buttons need the dashboard feed: one for the holdings, one for the
+  // account value they scale to.
+  const hasFeed = Boolean(portfolio?.totals?.total_value);
+  document.getElementById("loadCurrent").disabled = !hasFeed;
+  document.getElementById("fullyInvest").disabled = !hasFeed;
 
   document.getElementById("universeCount").textContent =
     `${universe.count.toLocaleString("en-US")} names`;
@@ -137,7 +146,7 @@ function seedFromCurrent() {
   }
   state.draft = state.current.holdings
     .filter((h) => state.byTicker.has(h.ticker))
-    .map((h) => ({ ticker: h.ticker, weight: Number(((h.weight ?? 0) * 100).toFixed(2)) }));
+    .map((h) => ({ ticker: h.ticker, dollars: round2(h.market_value ?? 0) }));
 }
 
 /* ---------- detail fetch ---------- */
@@ -226,11 +235,11 @@ function addPosition(ticker) {
   if (!state.byTicker.has(ticker)) return;
 
   if (!state.draft.some((r) => r.ticker === ticker)) {
-    // Seed at 5%, or the existing average if that is smaller, so adding to an
-    // already-full draft does not overshoot 100% by much.
+    // Seed at the average existing position size so a new name lands at a
+    // plausible weight rather than dominating or disappearing.
     const total = draftTotal();
-    const seed = state.draft.length ? Math.min(5, total / state.draft.length) : 5;
-    state.draft.push({ ticker, weight: Number(seed.toFixed(2)) });
+    const seed = total ? total / state.draft.length : DEFAULT_ADD;
+    state.draft.push({ ticker, dollars: round2(seed) });
     saveDraft();
     render();
   }
@@ -257,29 +266,35 @@ function flashRow(ticker) {
 
 /* ---------- draft maths ---------- */
 
-const draftTotal = () => state.draft.reduce((s, r) => s + (r.weight || 0), 0);
+const round2 = (v) => Math.round(v * 100) / 100;
+
+const draftTotal = () => state.draft.reduce((s, r) => s + (r.dollars || 0), 0);
 
 function draftRows() {
+  // Weights are each position's share of the invested dollars, apportioned so
+  // the column shown in the table adds to exactly 100.00% at two decimals.
+  const weights = apportion(100, state.draft.map((r) => r.dollars || 0));
   return state.draft
-    .map((r) => ({ ...state.byTicker.get(r.ticker), weight: r.weight }))
-    .sort((a, b) => b.weight - a.weight || a.ticker.localeCompare(b.ticker));
+    .map((r, i) => ({ ...state.byTicker.get(r.ticker), dollars: r.dollars, weight: weights[i] }))
+    .sort((a, b) => b.dollars - a.dollars || a.ticker.localeCompare(b.ticker));
 }
 
 /**
- * Scale `targets` so the weights sum to exactly 100.00 at two decimals.
+ * Split `total` dollars into one share per weight in `targets`, to the cent.
  *
- * Rounding each share independently leaves the total a cent or two off, which
- * then shows up as "99.99%" under a button labelled "Normalize to 100%".
- * Largest-remainder apportionment avoids that: floor everything to a cent,
- * then hand the leftover cents to the shares with the biggest remainders.
+ * Rounding each share independently leaves the sum a cent or two off the total,
+ * which then shows as weights that do not quite reach 100%. Largest-remainder
+ * apportionment avoids that: floor every share to a cent, then hand the
+ * leftover cents to the shares with the biggest remainders.
  */
-function apportion(targets) {
-  const total = targets.reduce((s, v) => s + v, 0);
-  if (!total) return targets.map(() => 0);
+function apportion(total, targets) {
+  const base = targets.reduce((s, v) => s + v, 0);
+  if (!base || !total) return targets.map(() => 0);
 
-  const exact = targets.map((v) => (v / total) * 10000); // in cents of a percent
+  const cents = Math.round(total * 100);
+  const exact = targets.map((v) => (v / base) * cents);
   const floors = exact.map(Math.floor);
-  let leftover = 10000 - floors.reduce((s, v) => s + v, 0);
+  let leftover = cents - floors.reduce((s, v) => s + v, 0);
 
   const order = exact
     .map((v, i) => ({ i, frac: v - Math.floor(v) }))
@@ -287,7 +302,7 @@ function apportion(targets) {
 
   for (let k = 0; leftover > 0; k++, leftover--) floors[order[k % order.length].i] += 1;
 
-  return floors.map((cents) => cents / 100);
+  return floors.map((c) => c / 100);
 }
 
 /** Weighted average of `key` over the rows that actually report it. */
@@ -309,14 +324,18 @@ function render() {
 function renderCards() {
   const rows = draftRows();
   const total = draftTotal();
-  const cash = Math.max(0, 100 - total);
+  const biggest = rows[0];
 
   const cards = [
-    { label: "Positions", value: String(rows.length), note: `${cash.toFixed(1)}% unallocated` },
     {
-      label: "Allocated",
-      value: `${total.toFixed(1)}%`,
-      note: total > 100.05 ? "over-allocated" : total < 99.95 ? "under-allocated" : "fully allocated",
+      label: "Positions",
+      value: String(rows.length),
+      note: biggest ? `largest ${biggest.ticker} at ${biggest.weight.toFixed(1)}%` : "nothing added yet",
+    },
+    {
+      label: "Invested",
+      value: bigMoney(total),
+      note: rows.length ? `${bigMoney(total / rows.length)} average position` : "—",
     },
     {
       label: "Weighted P/E",
@@ -332,7 +351,7 @@ function renderCards() {
     {
       label: "Weighted Mkt Cap",
       value: bigMoney(weightedBy(rows, "market_cap")),
-      note: "target-weight average",
+      note: "dollar-weighted average",
     },
   ];
 
@@ -352,7 +371,7 @@ function renderDraftTable() {
   const body = document.getElementById("draftBody");
 
   if (!rows.length) {
-    body.innerHTML = `<tr><td class="empty" colspan="8">
+    body.innerHTML = `<tr><td class="empty" colspan="9">
       No positions yet — search above, or load the fund's current portfolio.</td></tr>`;
   } else {
     const max = Math.max(...rows.map((r) => r.weight || 0), 1);
@@ -368,11 +387,16 @@ function renderDraftTable() {
         )}${r.industry ? `<small>${esc(r.industry)}</small>` : ""}</td>
         <td>
           <span class="wedit">
-            <span class="wbar"><i style="width:${((r.weight || 0) / max) * 100}%"></i></span>
-            <input class="winput" type="number" min="0" max="100" step="0.25"
-                   value="${r.weight}" data-weight="${esc(r.ticker)}"
-                   aria-label="Target weight for ${esc(r.ticker)}">
-            <span class="wpct">%</span>
+            <span class="wpct">$</span>
+            <input class="winput" type="number" min="0" step="100"
+                   value="${r.dollars}" data-dollars="${esc(r.ticker)}"
+                   aria-label="Dollars invested in ${esc(r.ticker)}">
+          </span>
+        </td>
+        <td>
+          <span class="wedit">
+            <span class="wbar"><i style="width:${(r.weight / max) * 100}%"></i></span>
+            <b class="wval">${r.weight.toFixed(2)}%</b>
           </span>
         </td>
         <td class="clickable" data-open="${esc(r.ticker)}">${usd(r.price)}</td>
@@ -394,7 +418,8 @@ function renderDraftTable() {
     ? `<tr>
         <td class="text">Total · ${rows.length} position${rows.length === 1 ? "" : "s"}</td>
         <td class="text"></td>
-        <td class="${Math.abs(total - 100) > 0.05 ? "down" : "up"}">${total.toFixed(2)}%</td>
+        <td>${usd(total, 0)}</td>
+        <td>${total ? "100.00%" : "—"}</td>
         <td></td>
         <td class="${toneClass(weightedBy(rows, "ytd"))}">${signedPct(weightedBy(rows, "ytd"))}</td>
         <td>${mult(weightedBy(rows, "pe", peMeaningful))}</td>
@@ -403,32 +428,34 @@ function renderDraftTable() {
       </tr>`
     : "";
 
-  const note = document.getElementById("weightNote");
-  if (!rows.length) {
-    note.textContent = "";
-  } else if (Math.abs(total - 100) <= 0.05) {
-    note.innerHTML = `<span class="ok">Fully allocated at 100.00%.</span>`;
-  } else if (total > 100) {
-    note.innerHTML = `<span class="warn">Over-allocated by ${(total - 100).toFixed(
-      2
-    )} pts</span> — trim a position or use <em>Normalize to 100%</em>.`;
-  } else {
-    note.innerHTML = `<span class="warn">${(100 - total).toFixed(
-      2
-    )} pts unallocated</span> — this would sit in cash.`;
-  }
+  document.getElementById("weightNote").innerHTML = rows.length ? budgetNote(total) : "";
 
   wireRows();
+}
+
+/** How the draft's invested dollars compare with the account's actual value. */
+function budgetNote(total) {
+  const budget = state.current?.totals?.total_value;
+  if (!budget) {
+    return `Weights are each position's share of the <b>${usd(total, 0)}</b> invested.`;
+  }
+  const left = budget - total;
+  const base = `Weights are each position's share of the <b>${usd(
+    total,
+    0
+  )}</b> invested, against an account value of ${usd(budget, 0)} — `;
+  if (Math.abs(left) < 1) return `${base}<span class="ok">fully invested</span>.`;
+  return left > 0
+    ? `${base}<span class="warn">${usd(left, 0)} would sit in cash</span>.`
+    : `${base}<span class="warn">${usd(-left, 0)} over budget</span>.`;
 }
 
 function wireRows() {
   for (const input of document.querySelectorAll(".winput")) {
     input.addEventListener("change", () => {
-      const ticker = input.dataset.weight;
-      const entry = state.draft.find((r) => r.ticker === ticker);
+      const entry = state.draft.find((r) => r.ticker === input.dataset.dollars);
       if (!entry) return;
-      const value = Math.max(0, Math.min(100, Number(input.value) || 0));
-      entry.weight = Number(value.toFixed(2));
+      entry.dollars = round2(Math.max(0, Number(input.value) || 0));
       saveDraft();
       render();
     });
@@ -457,10 +484,8 @@ function renderDraftSectors() {
   const groups = new Map();
   for (const r of rows) {
     const key = r.sector ?? "Unclassified";
-    groups.set(key, (groups.get(key) ?? 0) + (r.weight || 0));
+    groups.set(key, (groups.get(key) ?? 0) + r.weight);
   }
-  const cash = Math.max(0, 100 - draftTotal());
-  if (cash > 0.005) groups.set("Cash & Equivalents", cash);
 
   const entries = [...groups.entries()].sort((a, b) => b[1] - a[1]);
   const host = document.getElementById("draftSectors");
@@ -473,9 +498,7 @@ function renderDraftSectors() {
   const max = Math.max(...entries.map(([, w]) => w), 1);
   host.innerHTML = entries
     .map(
-      ([name, w]) => `<div class="sector-row static ${
-        name === "Cash & Equivalents" ? "is-cash" : ""
-      }">
+      ([name, w]) => `<div class="sector-row static">
         <span class="sector-name">${esc(name)}</span>
         <span class="sector-track"><span class="sector-fill" style="width:${
           (w / max) * 100
@@ -730,21 +753,25 @@ document.getElementById("loadCurrent").addEventListener("click", () => {
   saveDraft();
   render();
   document.getElementById("subLine").textContent =
-    "Reset to the fund's current positions and weights.";
+    "Reset to the fund's current positions and market values.";
 });
 
 document.getElementById("equalWeight").addEventListener("click", () => {
   if (!state.draft.length) return;
-  const even = apportion(state.draft.map(() => 1));
-  state.draft.forEach((r, i) => (r.weight = even[i]));
+  // Spread whatever is already invested evenly; if nothing is, fall back to the
+  // account value so the button still does something useful on an empty draft.
+  const total = draftTotal() || state.current?.totals?.total_value || DEFAULT_ADD * state.draft.length;
+  const even = apportion(total, state.draft.map(() => 1));
+  state.draft.forEach((r, i) => (r.dollars = even[i]));
   saveDraft();
   render();
 });
 
-document.getElementById("normalize").addEventListener("click", () => {
-  if (!draftTotal()) return;
-  const scaled = apportion(state.draft.map((r) => r.weight));
-  state.draft.forEach((r, i) => (r.weight = scaled[i]));
+document.getElementById("fullyInvest").addEventListener("click", () => {
+  const budget = state.current?.totals?.total_value;
+  if (!budget || !draftTotal()) return;
+  const scaled = apportion(budget, state.draft.map((r) => r.dollars));
+  state.draft.forEach((r, i) => (r.dollars = scaled[i]));
   saveDraft();
   render();
 });

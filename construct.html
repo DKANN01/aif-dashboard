@@ -34,7 +34,7 @@
       <div class="controls">
         <button type="button" class="btn" id="loadCurrent">Load current portfolio</button>
         <button type="button" class="btn" id="equalWeight">Equal weight</button>
-        <button type="button" class="btn" id="normalize">Normalize to 100%</button>
+        <button type="button" class="btn" id="fullyInvest">Invest full account</button>
         <button type="button" class="btn danger" id="clearAll">Clear</button>
       </div>
     </div>
@@ -50,7 +50,7 @@
   <section class="panel">
     <div class="panel-head">
       <h2>Target Portfolio</h2>
-      <span class="hint">Edit a weight, or click a row to see its multiples and YTD chart</span>
+      <span class="hint">Edit a dollar amount, or click a row to see its multiples and YTD chart</span>
     </div>
     <div class="table-scroll">
       <table id="draftTable">
@@ -58,7 +58,8 @@
           <tr>
             <th class="text">Position</th>
             <th class="text">Sector</th>
-            <th class="num">Target Weight</th>
+            <th class="num">Dollars</th>
+            <th class="num">Weight</th>
             <th class="num">Price</th>
             <th class="num">YTD</th>
             <th class="num">P/E</th>
@@ -76,7 +77,7 @@
   <section class="panel">
     <div class="panel-head">
       <h2>Sector Allocation</h2>
-      <span class="hint">Target weights only &mdash; cash is whatever is left unallocated</span>
+      <span class="hint">Share of invested dollars &mdash; cash is excluded</span>
     </div>
     <div class="sectors" id="draftSectors"></div>
   </section>
@@ -85,10 +86,11 @@
     <p id="sourceLine"></p>
     <p class="defs">
       <strong>Definitions.</strong>
-      Target weights are what you type &mdash; they do not have to add to 100%, and any
-      shortfall is shown as unallocated cash. Portfolio P/E, EV/Sales and YTD return are
-      weighted by target weight across the positions that report each figure, so they
-      ignore both cash and names with negative earnings. YTD is price-only and excludes
+      You type the dollars going into each name; <em>weight</em> is that amount divided by
+      the total invested, so the weights always add to 100% and any cash left against the
+      account's value is called out under the table instead. Portfolio P/E, EV/Sales and
+      YTD return are weighted by those weights across the positions that report each
+      figure, so they ignore names with negative earnings. YTD is price-only and excludes
       dividends. Multiples use the last reported fiscal year unless labelled
       <em>forward</em>, which is the next-year analyst estimate.
     </p>

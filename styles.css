@@ -172,6 +172,8 @@ h1 {
 }
 .btn:hover { color: var(--text); border-color: #38425a; }
 .btn.danger:hover { color: var(--down); border-color: var(--down); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:disabled:hover { color: var(--muted); border-color: var(--line); }
 
 .btn.icon {
   padding: 2px 8px;
@@ -372,7 +374,7 @@ tfoot td.text { text-align: left; }
 .wedit { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
 
 .winput {
-  width: 72px;
+  width: 92px;
   background: var(--panel-2);
   border: 1px solid var(--line);
   color: var(--text);
@@ -384,6 +386,7 @@ tfoot td.text { text-align: left; }
 }
 .winput:focus { outline: none; border-color: var(--accent); }
 .wpct { color: var(--muted); font-size: 12px; width: 10px; }
+.wval { font-variant-numeric: tabular-nums; }
 
 td.clickable { cursor: pointer; }
 tbody tr.flash td { background: rgba(76, 141, 255, 0.16); }

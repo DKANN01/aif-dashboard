@@ -4,7 +4,7 @@ A static, interactive site for the AIF portfolio, in two tabs:
 
 - **Dashboard** — every current position with its portfolio weight, 1M / 3M / YTD price return,
   P/E multiple, market cap and sector.
-- **Construct** — a scratchpad for the next portfolio. Add or drop names, type target weights,
+- **Construct** — a scratchpad for the next portfolio. Add or drop names, type dollar amounts,
   search the top 750 US companies by market cap, and click any position to see its valuation
   multiples and a year-to-date price chart.
 
@@ -50,12 +50,16 @@ in that file and only applies when the upstream sector is missing or "Miscellane
 
 ## The Construct tab
 
-Target weights are whatever you type. They do not have to add to 100% — the shortfall shows as
-unallocated cash, and **Normalize to 100%** scales everything proportionally when you are done.
-**Equal weight** splits evenly across the current names, and **Load current portfolio** resets the
-draft to the fund's live positions and weights.
+You type the **dollars** going into each name. The **weight** column is that amount divided by the
+total invested, so the weights always add to 100% and the table is read the same way whatever the
+size of the book. The line under the table compares the dollars invested against the account's
+actual value and names the difference as cash left over or an overdraw.
 
-The draft is saved to `localStorage` under `aif.construct.draft.v1`, so it survives a refresh or a
+**Equal weight** spreads the invested dollars evenly across the current names, **Invest full
+account** scales the draft proportionally until it uses the whole account value, and **Load current
+portfolio** resets the draft to the fund's live positions at their market values.
+
+The draft is saved to `localStorage` under `aif.construct.draft.v2`, so it survives a refresh or a
 closed tab. It is **per-browser and never leaves the machine** — it is not shared between people
 and is not committed to the repo.
 

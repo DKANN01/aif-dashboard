@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-11-17T04:05:28+00:00",
+  "generated_at": "2026-11-18T03:01:45+00:00",
   "positions_as_of": "2026-08-31",
   "positions_source": "Fidelity Investment Report, statement period August 1-31, 2026 (file: AIF - August 2026.pdf, Holdings section, pages 3-4). Share counts are the 'Quantity Aug 31, 2026' column.",
   "account": "THE UVA MCINTIRE SCHOOL OF COMMERCE FOUNDATION",
   "price_source": "Nasdaq public quote API (api.nasdaq.com)",
   "totals": {
-    "total_value": 63746.72,
-    "equity_value": 51104.29,
+    "total_value": 59297.62,
+    "equity_value": 46655.19,
     "cash_value": 12642.43,
-    "cash_weight": 0.19832283135508777,
-    "equity_weight": 0.8016771686449122,
+    "cash_weight": 0.21320299195819328,
+    "equity_weight": 0.7867970080418067,
     "position_count": 10,
-    "equity_return_1m": 0.3954983367836038,
-    "equity_return_3m": 0.3036607309687411,
-    "equity_return_ytd": 0.5056278132376537
+    "equity_return_1m": 0.05295515458520975,
+    "equity_return_3m": -0.010044563701535293,
+    "equity_return_ytd": 0.11820929964189938
   },
   "cash": {
     "ticker": "SPAXX",
     "name": "Fidelity Government Money Market",
     "market_value": 12642.43,
-    "weight": 0.19832283135508777
+    "weight": 0.21320299195819328
   },
   "holdings": [
     {
@@ -30,25 +30,25 @@
       "market_value": 7844.73,
       "day_change_pct": -0.039599999999999996,
       "return_1m": -0.008774890313871131,
-      "return_3m": -0.043353636689358654,
+      "return_3m": -0.025418104592514035,
       "return_ytd": 0.4897286330205426,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": -683.02,
+        "actual": -662.07,
         "actual_label": "2025 Actual",
-        "forward": 7342.5,
+        "forward": 5693.8,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 109628606882.0,
+      "market_cap": 102030691076.0,
       "sector": "Technology",
       "sector_source": "Nasdaq",
       "industry": "Computer Software: Prepackaged Software",
       "trade_time": "Nov 16, 2026",
-      "weight": 0.12306091984026786
+      "weight": 0.13229417976640548
     },
     {
       "ticker": "CPNG",
@@ -58,137 +58,109 @@
       "market_value": 7066.91,
       "day_change_pct": -0.0533,
       "return_1m": 0.007708479327260154,
-      "return_3m": -0.08524173027989823,
+      "return_3m": -0.07702182284980741,
       "return_ytd": -0.39041966935142003,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": 119.83,
+        "actual": 116.62,
         "actual_label": "2025 Actual",
-        "forward": -23.97,
+        "forward": -23.32,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 27198116657.0,
+      "market_cap": 25083205444.0,
       "sector": "Consumer Discretionary",
       "sector_source": "Nasdaq",
       "industry": "Catalog/Specialty Distribution",
       "trade_time": "Nov 16, 2026",
-      "weight": 0.11085919401029576
+      "weight": 0.11917695853560396
     },
     {
       "ticker": "FWONK",
       "name": "Formula One Group Series C",
       "shares": 54.2,
-      "price": 109.04,
-      "market_value": 5909.97,
-      "day_change_pct": -0.0037,
-      "return_1m": 0.20074881620966867,
-      "return_3m": 0.06922926063934098,
-      "return_ytd": 0.10689270124860428,
+      "price": 107.3,
+      "market_value": 5815.66,
+      "day_change_pct": -0.024300000000000002,
+      "return_1m": 0.18158793084462066,
+      "return_3m": 0.05175455792981776,
+      "return_ytd": 0.08922951984570093,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": 50.68,
+        "actual": 49.45,
         "actual_label": "2025 Actual",
-        "forward": 54.17,
+        "forward": 52.86,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 27347205394.0,
+      "market_cap": 27580449167.0,
       "sector": "Industrials",
       "sector_source": "Nasdaq",
       "industry": "Broadcasting",
-      "trade_time": "Nov 13, 2026",
-      "weight": 0.09271018179445155
+      "trade_time": "Nov 17, 2026",
+      "weight": 0.09807577437340656
     },
     {
       "ticker": "SN",
       "name": "SharkNinja, Inc.",
       "shares": 24.66,
-      "price": 226.2,
-      "market_value": 5578.09,
-      "day_change_pct": 0.0275,
-      "return_1m": 0.21280360302396661,
-      "return_3m": 0.23189195076789004,
-      "return_ytd": 1.0214477211796247,
+      "price": 223.4,
+      "market_value": 5509.04,
+      "day_change_pct": -0.0132,
+      "return_1m": 0.1977910031633694,
+      "return_3m": 0.22196696203916422,
+      "return_ytd": 0.9964253798033957,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": 44.15,
+        "actual": 43.47,
         "actual_label": "2025 Actual",
-        "forward": 38.25,
+        "forward": 37.66,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 31874181526.0,
+      "market_cap": 31479629323.0,
       "sector": "Consumer Discretionary",
       "sector_source": "Nasdaq",
       "industry": "Consumer Electronics/Appliances",
-      "trade_time": "Nov 13, 2026",
-      "weight": 0.08750395314456964
+      "trade_time": "Nov 16, 2026",
+      "weight": 0.09290490916836124
     },
     {
       "ticker": "GOOG",
       "name": "Alphabet Inc. Cl C",
       "shares": 17.803,
-      "price": 292.52,
-      "market_value": 5207.73,
-      "day_change_pct": -0.0096,
-      "return_1m": -0.1317562553797751,
-      "return_3m": -0.14330062966759416,
-      "return_ytd": -0.06781389420012751,
+      "price": 281.26,
+      "market_value": 5007.27,
+      "day_change_pct": -0.0385,
+      "return_1m": -0.1651776438811553,
+      "return_3m": -0.1758673230192217,
+      "return_ytd": -0.1036966220522626,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": 26.02,
+        "actual": 25.68,
         "actual_label": "2025 Actual",
-        "forward": 14.25,
+        "forward": 14.06,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 3596240880000.0,
+      "market_cap": 3457810440000.0,
       "sector": "Technology",
       "sector_source": "Nasdaq",
       "industry": "Computer Software: Programming, Data Processing",
-      "trade_time": "Nov 13, 2026",
-      "weight": 0.08169408559373721
-    },
-    {
-      "ticker": "EMBJ",
-      "name": "Embraer SA ADR",
-      "shares": 65.239,
-      "price": 78.71,
-      "market_value": 5134.96,
-      "day_change_pct": -0.0097,
-      "return_1m": 3.352225601327066,
-      "return_3m": 3.080881399870382,
-      "return_ytd": 3.8910983377349693,
-      "basis_dates": {
-        "1m": "2026-10-16",
-        "3m": "2026-08-17",
-        "ytd": "2025-12-31"
-      },
-      "pe": {
-        "actual": 13.6,
-        "actual_label": "2025 Actual",
-        "forward": 6.75,
-        "forward_label": "2026 Estimates"
-      },
-      "market_cap": 14222230720.0,
-      "sector": "Industrials",
-      "sector_source": "Nasdaq",
-      "industry": "Aerospace",
-      "trade_time": "Nov 13, 2026",
-      "weight": 0.08055253666384718
+      "trade_time": "Nov 16, 2026",
+      "weight": 0.08444301811775921
     },
     {
       "ticker": "FERG",
@@ -198,109 +170,137 @@
       "market_value": 4492.74,
       "day_change_pct": -0.0125,
       "return_1m": 0.09345451405379723,
-      "return_3m": 0.033778267613682855,
+      "return_3m": 0.03593487953532137,
       "return_ytd": 0.13756007725823105,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": 23.94,
+        "actual": 23.54,
         "actual_label": "2025 Actual",
-        "forward": 22.02,
+        "forward": 21.66,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 49707659647.0,
+      "market_cap": 49042476700.0,
       "sector": "Industrials",
       "sector_source": "override",
       "industry": "Miscellaneous",
       "trade_time": "Nov 16, 2026",
-      "weight": 0.07047797910229735
+      "weight": 0.07576594136493169
     },
     {
       "ticker": "APO",
       "name": "Apollo Global Management, Inc.",
       "shares": 34.868,
-      "price": 123.525,
-      "market_value": 4307.07,
-      "day_change_pct": 0.0179,
-      "return_1m": 0.1150478425708612,
-      "return_3m": -0.0818715623606362,
-      "return_ytd": -0.14669107488256417,
+      "price": 119.99,
+      "market_value": 4183.81,
+      "day_change_pct": -0.0282,
+      "return_1m": 0.08313775049647942,
+      "return_3m": -0.10354874859917818,
+      "return_ytd": -0.1711108040895275,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": 16.28,
+        "actual": 15.99,
         "actual_label": "2025 Actual",
-        "forward": 15.29,
+        "forward": 15.02,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 72933184939.0,
+      "market_cap": 70846005754.0,
       "sector": "Finance",
       "sector_source": "Nasdaq",
       "industry": "Investment Managers",
-      "trade_time": "Nov 13, 2026",
-      "weight": 0.06756535865688462
+      "trade_time": "Nov 16, 2026",
+      "weight": 0.07055612012758693
     },
     {
       "ticker": "WM",
       "name": "Waste Management, Inc.",
       "shares": 12.758,
-      "price": 243.81,
-      "market_value": 3110.53,
-      "day_change_pct": -0.0012,
-      "return_1m": 0.07471568368156567,
-      "return_3m": 0.08834032675653947,
-      "return_ytd": 0.10969004596968723,
+      "price": 244.39,
+      "market_value": 3117.93,
+      "day_change_pct": 0.0023,
+      "return_1m": 0.07727232654500571,
+      "return_3m": 0.09307630378388043,
+      "return_ytd": 0.11232988939966315,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": 32.59,
+        "actual": 32.37,
         "actual_label": "2025 Actual",
-        "forward": 30.36,
+        "forward": 30.16,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 96947368870.0,
+      "market_cap": 97177997121.0,
       "sector": "Utilities",
       "sector_source": "Nasdaq",
       "industry": "Environmental Services",
-      "trade_time": "Nov 13, 2026",
-      "weight": 0.04879513800866932
+      "trade_time": "Nov 16, 2026",
+      "weight": 0.05258103107679533
     },
     {
       "ticker": "FLUT",
       "name": "Flutter Entertainment plc",
       "shares": 30.24,
-      "price": 81.07,
-      "market_value": 2451.56,
-      "day_change_pct": -0.011000000000000001,
-      "return_1m": 0.0723544973544974,
-      "return_3m": -0.15893764913372765,
-      "return_ytd": -0.6230003720238095,
+      "price": 79.13,
+      "market_value": 2392.89,
+      "day_change_pct": -0.024700000000000003,
+      "return_1m": 0.046693121693121675,
+      "return_3m": -0.14813219937560562,
+      "return_ytd": -0.6320219494047619,
       "basis_dates": {
         "1m": "2026-10-16",
-        "3m": "2026-08-17",
+        "3m": "2026-08-18",
         "ytd": "2025-12-31"
       },
       "pe": {
-        "actual": 11.67,
+        "actual": 11.14,
         "actual_label": "2025 Actual",
-        "forward": 26.64,
+        "forward": 25.44,
         "forward_label": "2026 Estimates"
       },
-      "market_cap": 14095741832.0,
+      "market_cap": 13758431617.0,
       "sector": "Technology",
       "sector_source": "Nasdaq",
       "industry": "Computer Software: Programming, Data Processing",
-      "trade_time": "Nov 13, 2026",
-      "weight": 0.0384578218298918
+      "trade_time": "Nov 16, 2026",
+      "weight": 0.04035389615974469
+    },
+    {
+      "ticker": "EMBJ",
+      "name": "Embraer SA ADR",
+      "shares": 65.239,
+      "price": 18.765,
+      "market_value": 1224.21,
+      "day_change_pct": -0.0466,
+      "return_1m": 0.03760022117777151,
+      "return_3m": -0.026206538661131207,
+      "return_ytd": 0.16607115115737137,
+      "basis_dates": {
+        "1m": "2026-10-16",
+        "3m": "2026-08-18",
+        "ytd": "2025-12-31"
+      },
+      "pe": {
+        "actual": 55.59,
+        "actual_label": "2025 Actual",
+        "forward": 27.39,
+        "forward_label": "2026 Estimates"
+      },
+      "market_cap": 10172040115.0,
+      "sector": "Industrials",
+      "sector_source": "Nasdaq",
+      "industry": "Aerospace",
+      "trade_time": "Nov 16, 2026",
+      "weight": 0.020645179351211736
     }
   ]
 }
